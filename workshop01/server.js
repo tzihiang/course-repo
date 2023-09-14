@@ -1,7 +1,13 @@
-const express = require("express");
-const PORT = 5000;
+import path from 'path';
+import express from 'express';
+import { fileURLToPath } from 'url';
+
+const PORT = process.env.port || 8081;
 
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -14,6 +20,7 @@ const QUOTES = [
   "It's not that I'm so smart, it's just that I stay with problems longer.",
   "It is pitch dark. You are likely to be eaten by a grue.",
 ];
+app.use(express.static(path.join(__dirname, 'my-app', 'build')));
 
 app.get("/api/getQuote", (req, res) => {
   const randomQuote = QUOTES[getRandomArbitrary(0, 5)];
